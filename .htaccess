@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI}  !(\.css|\.png)$
+RewriteRule (.*)  index.php [QSA]
