@@ -6,6 +6,6 @@
 </head
 <body>
 <h1>Your event has successfully been created</h1>
-<p><a href="./<?php echo $url; ?>">Click here</a> to access and to begin to upload pictures</p>
+<p><a href="./<?php echo $url; ?>">Click here</a> to access and to start uploading pictures</p>
 </body>
 </html>
