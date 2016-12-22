@@ -16,7 +16,7 @@
             <div class="img"><img src="style/logo.png" alt="logo" class="img-responsive"></div>
         </div>
         <div class="col-sm-8">
-            <p>Share your moments with the one who deserve it</p>
+            <p>Share your moments with the ones who deserve it</p>
         </div>
     </div>
 </div>

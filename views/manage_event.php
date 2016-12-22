@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1><?php echo $event_name; ?></h1>
-<p>Upload files to share with your friends !</p>
+<p>Upload pictures to share with your friends !</p>
 <form action="./<?php echo $url ?>" method="post" enctype="multipart/form-data">
     <label for="filename">File : </label><input type="file" name="filename" id="filename"/>
     <input type="hidden" value="<?php echo $url; ?>" name="event">

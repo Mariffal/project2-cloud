@@ -26,8 +26,6 @@ $client = SqsClient::factory(array(
 $succeed = false;
 
 if($content_type == 'application/zip') {
-
-    echo "Zip";
     $zip = new ZipArchive;
     $res = $zip->open($file);
 
@@ -36,7 +34,7 @@ if($content_type == 'application/zip') {
         $zip->close();
     }
     else {
-        die("ERROR");
+        die("An error occured");
     }
 
     $files = scandir('./zip_tmp');
@@ -59,11 +57,10 @@ if($content_type == 'application/zip') {
 
         unlink($filename);
     }
+    echo "Your zip file has been sent.";
 
 }
 else if(preg_match('#^image/#', $content_type)) {
-    echo "Image";
-
     $uploadName = $_FILES['filename']['name'];
     S3::putObject(S3::inputFile($file, false), $bucket, $uploadName, S3::ACL_PUBLIC_READ_WRITE);
 
@@ -72,6 +69,7 @@ else if(preg_match('#^image/#', $content_type)) {
         'QueueUrl' => $queueUrl,
         'MessageBody' => $message
     ));
+    echo "Your picture has been sent";
 
 }
 else {
