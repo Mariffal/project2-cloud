@@ -4,6 +4,7 @@ require 'vendor/autoload.php';
 require 'ressources/S3.php';
 
 use Aws\Sqs\SqsClient;
+use Aws\S3\S3Client;
 
 $file = $_FILES['filename']['tmp_name'];
 $folder= $_POST['event'];
@@ -13,7 +14,12 @@ $content_type = mime_content_type($file);
 $bucket = 'oknowitworks';
 $queueUrl = 'https://sqs.us-west-2.amazonaws.com/153270437974/queue-cloud';
 
-S3::setAuth('AKIAICXILZ6LMT6WHF3Q', 'vjULjKEMP/mp/psJbvAiSe+N6UkjswIICG5C6koP');
+
+$s3 = S3Client::factory(array(
+    'profile' => 'default',
+    'region' => 'us-west-2',
+    'version' => 'latest'
+));
 
 $client = SqsClient::factory(array(
     'profile' => "default",
@@ -26,6 +32,8 @@ $client = SqsClient::factory(array(
 $succeed = false;
 
 if($content_type == 'application/zip') {
+
+    echo "Zip";
     $zip = new ZipArchive;
     $res = $zip->open($file);
 
@@ -34,7 +42,7 @@ if($content_type == 'application/zip') {
         $zip->close();
     }
     else {
-        die("An error occured");
+        die("ERROR");
     }
 
     $files = scandir('./zip_tmp');
@@ -47,7 +55,12 @@ if($content_type == 'application/zip') {
         $filename = './zip_tmp/'.$file;
         $uploadName = 'test_zip_'.$file;
 
-        S3::putObject(S3::inputFile($filename, false), $bucket, $uploadName, S3::ACL_PUBLIC_READ_WRITE);
+        $result = $s3->putObject(array(
+            'Bucket'     => $bucket,
+            'Key'        => $uploadName,
+            'SourceFile' => $filename
+        ));
+
 
         $message= $folder.':'.$uploadName;
         $client->sendMessage(array(
@@ -57,19 +70,23 @@ if($content_type == 'application/zip') {
 
         unlink($filename);
     }
-    echo "Your zip file has been sent.";
 
 }
 else if(preg_match('#^image/#', $content_type)) {
+    echo "Image";
+
     $uploadName = $_FILES['filename']['name'];
-    S3::putObject(S3::inputFile($file, false), $bucket, $uploadName, S3::ACL_PUBLIC_READ_WRITE);
+    $result = $s3->putObject(array(
+        'Bucket'     => $bucket,
+        'Key'        => $uploadName,
+        'SourceFile' => $file
+    ));
 
     $message= $folder.':'.$uploadName;
     $client->sendMessage(array(
         'QueueUrl' => $queueUrl,
         'MessageBody' => $message
     ));
-    echo "Your picture has been sent";
 
 }
 else {
