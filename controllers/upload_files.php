@@ -10,6 +10,7 @@ $file = $_FILES['filename']['tmp_name'];
 $folder= $_POST['event'];
 $content_type = mime_content_type($file);
 
+
 // TODO: Modify it in function of the bucket name and the new queue
 $bucket = 'bclassep2';
 $queueUrl = 'https://sqs.us-west-2.amazonaws.com/829489956151/bclassep2';
@@ -57,6 +58,7 @@ if($content_type == 'application/zip') {
 
         $content_type = mime_content_type($filename);
         if(preg_match('#^image/#', $content_type) == false) {
+            $wrong_file_type_in_zip = true;
             continue;
         }
 
@@ -86,11 +88,14 @@ else if(preg_match('#^image/#', $content_type)) {
         'SourceFile' => $file
     ));
 
-    $message= $folder.':'.$uploadName;
-    $client->sendMessage(array(
-        'QueueUrl' => $queueUrl,
-        'MessageBody' => $message
-    ));
+    $message= $folder.':'.$uploadName;7
+    $return = null;
+    while($return == null ) {
+        $return = $client->sendMessage(array(
+            'QueueUrl' => $queueUrl,
+            'MessageBody' => $message
+        ));
+    }
 
 }
 else {

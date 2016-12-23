@@ -7,6 +7,13 @@
 <body>
 <h1><?php echo $event_name; ?></h1>
 <p>Upload pictures to share with your friends !</p>
+<?php
+if(isset($wrong_file_type_zip) && $wrong_file_type_zip == true) {
+    echo "<div class='error'>";
+    echo "One or more files in the archives are not pictures";
+    echo "</div>";
+}
+?>
 <form action="./<?php echo $url ?>" method="post" enctype="multipart/form-data">
     <label for="filename">File : </label><input type="file" name="filename" id="filename"/>
     <input type="hidden" value="<?php echo $url; ?>" name="event">
