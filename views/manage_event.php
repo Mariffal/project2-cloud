@@ -19,7 +19,7 @@ if(isset($wrong_file_type_zip) && $wrong_file_type_zip == true) {
     <input type="hidden" value="<?php echo $url; ?>" name="event">
     <input type="submit" value="Upload"/>
 </form>
-<p><a href="http://delynbhgn89pq.cloudfront.net/<?php echo $url; ?>.zip">Click here</a> to download
+<p><a href="http://d2pvkzm8o2ecb4.cloudfront.net/<?php echo $url; ?>.zip">Click here</a> to download
 a zip containing all the pictures</p>
 </body>
 </html>
