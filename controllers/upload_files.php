@@ -11,7 +11,7 @@ $folder= $_POST['event'];
 $content_type = mime_content_type($file);
 
 // TODO: Modify it in function of the bucket name and the new queue
-$bucket = 'oknowitworks';
+$bucket = 'bclassep2';
 $queueUrl = 'https://sqs.us-west-2.amazonaws.com/829489956151/bclassep2';
 
 
@@ -73,7 +73,7 @@ if($content_type == 'application/zip') {
 }
 else if(preg_match('#^image/#', $content_type)) {
 
-    $uploadName = md5_file($_FILES['filename']['name']);
+    $uploadName = md5_file($file);
     $result = $s3->putObject(array(
         'Bucket'     => $bucket,
         'Key'        => $uploadName,
