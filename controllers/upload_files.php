@@ -53,7 +53,7 @@ if($content_type == 'application/zip') {
         }
 
         $filename = './zip_tmp/'.$file;
-        $uploadName = md5_file($filename).end((explode('.', $file)));
+        $uploadName = md5_file($filename).'.'.end((explode('.', $file)));
 
 
         $content_type = mime_content_type($filename);
@@ -81,14 +81,14 @@ if($content_type == 'application/zip') {
 }
 else if(preg_match('#^image/#', $content_type)) {
 
-    $uploadName = md5_file($file).end((explode('.', $file)));
+    $uploadName = md5_file($file).'.'.end((explode('.', $FILES['filename']['name'])));
     $result = $s3->putObject(array(
         'Bucket'     => $bucket,
         'Key'        => $uploadName,
         'SourceFile' => $file
     ));
 
-    $message= $folder.':'.$uploadName;7
+    $message= $folder.':'.$uploadName;
     $return = null;
     while($return == null ) {
         $return = $client->sendMessage(array(
