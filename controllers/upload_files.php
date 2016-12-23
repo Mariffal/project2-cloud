@@ -52,7 +52,7 @@ if($content_type == 'application/zip') {
         }
 
         $filename = './zip_tmp/'.$file;
-        $uploadName = md5_file($file);
+        $uploadName = md5_file($file).end((explode('.', $file)));
 
         $result = $s3->putObject(array(
             'Bucket'     => $bucket,
@@ -73,7 +73,7 @@ if($content_type == 'application/zip') {
 }
 else if(preg_match('#^image/#', $content_type)) {
 
-    $uploadName = md5_file($file);
+    $uploadName = md5_file($file).end((explode('.', $file)));
     $result = $s3->putObject(array(
         'Bucket'     => $bucket,
         'Key'        => $uploadName,
