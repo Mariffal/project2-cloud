@@ -52,7 +52,7 @@ if($content_type == 'application/zip') {
         }
 
         $filename = './zip_tmp/'.$file;
-        $uploadName = md5_file($file).end((explode('.', $file)));
+        $uploadName = md5_file($filename).end((explode('.', $file)));
 
         $result = $s3->putObject(array(
             'Bucket'     => $bucket,
